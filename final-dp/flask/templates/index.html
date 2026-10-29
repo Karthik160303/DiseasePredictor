@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease predictor</title>
+    <style>
+        /* General page styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff; /* Pastel cream */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Container for button and result */
+        .container {
+            text-align: center;
+            padding: 0px;
+            border: 2px solid #f0f0f0; /* Pastel border */
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #f0f0f0; /* Pastel yellow */
+        }
+
+        /* Styling for the button */
+        button {
+            background-color: #e7e7e7; /* Pastel blue */
+            color: #333;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #d1d1d1; /* Lighter pastel blue */
+            transform: scale(1.05);
+        }
+
+        /* Result text styling */
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <header style="margin: 0;
+        padding: 0;">
+    <h1 style="color: white;
+                background: linear-gradient(90deg, #020024 30%, #00f7ff, rgb(2,0,36) 180%);
+                font-family: 'Garamond', monospace;
+                margin: 0;
+                padding: 10px;
+                text-align: left;
+                font-size: 50px;
+                border-radius: 10px 10px 0px 0px;">CommunityCare Diagnostics</h1>
+</header>
+        <h1>Disease predictor</h1>
+        <h4>Select your symptoms to get a brief idea of your diagnosis.</h4>
+        <button id="run-script-button">Click here</button>
+        <p id="result"></p>
+        <p><i>Disease predictor can make mistakes</i></p>
+    </div>
+
+    <script>
+        document.getElementById('run-script-button').addEventListener('click', () => {
+            fetch('/run-script', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    const resultElement = document.getElementById('result');
+                    if (data.status === 'success') {
+                        resultElement.textContent = data.message;
+                        resultElement.style.color = '#2a9d8f'; /* Pastel green */
+                    } else {
+                        resultElement.textContent = data.message;
+                        resultElement.style.color = '#e63946'; /* Pastel red */
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('result').textContent = 'An error occurred.';
+                    document.getElementById('result').style.color = '#e63946'; /* Pastel red */
+                });
+        });
+    </script>
+</body>
+</html>
